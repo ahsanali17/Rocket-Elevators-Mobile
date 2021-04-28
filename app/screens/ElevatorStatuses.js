@@ -2,9 +2,9 @@ import React from 'react';
 import { Image, ImageBackground, StyleSheet, View, Text } from 'react-native';
 import colors from '../config/colors.js';
 
-function Home(props) {
+function ElevatorStatuses(props) {
     return (
-       <Text style={styles.image}>Home</Text>
+       <Text style={styles.image}>ElevatorStatuses</Text>
     );
 }
 
@@ -15,4 +15,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Home;
+export default ElevatorStatuses;
