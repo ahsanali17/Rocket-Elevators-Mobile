@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Image, ImageBackground, StyleSheet, View, Button, TextInput, Alert, Text, TouchableOpacity, FlatList, SafeAreaView } from 'react-native';
+import { Image, ImageBackground, StyleSheet, View, Button, TextInput, Alert, Text, TouchableOpacity, FlatList, SafeAreaView, ActivityIndicator } from 'react-native';
 import colors from '../config/colors.js';
 
 function Home(props) {
@@ -17,36 +17,42 @@ function Home(props) {
         .finally(() => setLoading(false));
     }, []);
     
+    useEffect(() => {
+        return () => {
+          console.log("cleans useEffect");
+        };
+    }, []);
     
     return (
        
         <ImageBackground 
-        style={styles.background}
+            style={styles.background}
         >
-            <FlatList
-                data={data}
-                keyExtractor={({ id }, index) => id}
-                renderItem={({ item }) => (
-                <Button
-                    title={`Elevator ID: ${item.id}`}
-                    onPress={() => {
-                    props.navigation.navigate("ElevatorStatuses", {
-                        id: item.id,
-                        status: item.status,
-                    });
-                    }}
-                >
-                    id:{item.id}
-                    status:{item.status}
-                    style={styles.buttonText}
-                </Button>
-                )}
-            />
-
+            {isLoading ? <ActivityIndicator/> : (
+                <FlatList
+                    data={data}
+                    keyExtractor={({ id }, index) => id}
+                    renderItem={({ item }) => (
+                    <Button
+                        title={`Elevator ID: ${item.id}`}
+                        onPress={() => {
+                        props.navigation.navigate("ElevatorStatuses", {
+                            id: item.id,
+                            status: item.status,
+                        });
+                        }}
+                    >
+                        id:{item.id}
+                        status:{item.status}
+                        style={styles.buttonText}
+                    </Button>
+                    )}
+                />
+            )}
 
 
             <View style={styles.buttonContainer}>
-                <Button style={styles.LogOutButton} onPress={() => props.navigation.navigate('Log-In')} title='Back'/>
+                <Button style={styles.LogOutButton} onPress={() => props.navigation.navigate('Log-In')} title='Log out'/>
             </View>
 
         </ImageBackground>
@@ -54,7 +60,6 @@ function Home(props) {
     );
 }
 
- // nicolas.genest@codeboxx.biz
 
 const styles = StyleSheet.create({
     background:{

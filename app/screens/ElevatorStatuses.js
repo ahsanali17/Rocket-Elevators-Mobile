@@ -11,7 +11,7 @@ const ElevatorStatuses=(props) => {
 
     // function checkStatus() {
     useEffect(()=>{
-        fetch(`https://rocket-rest-api.herokuapp.com/api/Elevators/${id}`)
+        fetch('https://rocket-rest-api.herokuapp.com/api/elevators/'+id)
         .then((response) => response.json())
         .then((json) => setData(json))
         .catch((error) => console.error(error))
@@ -22,19 +22,31 @@ const ElevatorStatuses=(props) => {
         return () => {
           console.log("cleans useEffect");
         };
-    }, []);
-
-
+    }, [isLoading]);
+    
+    
     function updateStatus() {
-        fetch(`https://rocket-rest-api.herokuapp.com/api/Elevators/${id}`, {
-            method: 'POST',
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Accept', 'application/json');
+        headers.append('Authorization', 'Basic ');
+        headers.append('Origin','*');
+        
+        
+        fetch('https://rocket-rest-api.herokuapp.com/api/elevators/'+id+'/status', {
+            method: 'PUT',
+            mode: 'cors',
             headers: new Headers({
                 'Content-Type': ' application/json', // <-- Specifying the Content-Type
+                'Access-Control-Allow-Origin' : '*',
+                'Access-Control-Allow-Credentials' : 'true',
+                'Access-Control-Allow-Methods' : 'GET, POST, OPTIONS, PUT',
+                'Access-Control-Allow-Headers' : 'Origin, Content-Type, Accept'
             }),
             body: JSON.stringify({
+                id: id,
                 status: 'Active'
             })
-            // <-- Post parameters
         })
         .then((response) => response.text())
         .then((responseText) => {
@@ -49,29 +61,28 @@ const ElevatorStatuses=(props) => {
     
     return (
         <View>
+            {isLoading ? <ActivityIndicator/> : (
+                <Text  
+                    style={[
+                    styles.status,
+                    data.status == "Inactive" ?
+                    { backgroundColor: 'red' } 
+                    : { backgroundColor: 'green' }
+                ]}>
+                    {data.status}
+                </Text>
+            )}
             <TouchableOpacity>
 
-                {isLoading ? <ActivityIndicator/> : (
-                    <Text  
-                        style={[
-                        styles.status,
-                        data.status == "Inactive" ?
-                        { backgroundColor: 'red' } 
-                        : { backgroundColor: 'green' }
-                    ]}>
-                        {data.status}
-                    </Text>
-                )}
 
                 <Button style={styles.buttonText}
-                    icon="switch" mode="outlined" onPress={() => updateStatus()} title='End Task'>
+                    icon="switch" mode="outlined" onPress={() => updateStatus()} title='Set As Active'>
                 </Button>  
-
-
-
+                <Button style={styles.buttonText}
+                    style={styles.backButton} onPress={() => props.navigation.navigate('Home')} title='Return To List'>
+                </Button>  
               
             </TouchableOpacity>
-            {/* </ImageBackground> */}
         </View>
     );
 }
@@ -117,7 +128,12 @@ const styles = StyleSheet.create({
         flex: 1,
         resizeMode: "cover",
         justifyContent: "center"
-      }
+    },
+    backButton:{
+        backgroundColor: colors.primary,
+        margin: 15,
+        padding: 5,
+    },
   });
 
 export default ElevatorStatuses;
