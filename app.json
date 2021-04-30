@@ -27,6 +27,8 @@
     },
     "web": {
       "favicon": "./app/assets/images/favicon.png"
-    }
+    },
+    "description": "Mobile Application ",
+    "githubUrl": "https://github.com/ahsanali17/Rocket-Elevators-Mobile"
   }
 }

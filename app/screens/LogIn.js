@@ -1,42 +1,95 @@
 import React from 'react';
-import { Image, ImageBackground, StyleSheet, View, Text } from 'react-native';
+import { Image, ImageBackground, StyleSheet, View, TextInput, Button, Alert, Text, useState, TouchableOpacity, SafeAreaView } from 'react-native';
 import colors from '../config/colors.js';
 
-function WelcomeScreen(props) {
+function LogIn(props) {
    
+    const [ email, onChangeText ] = React.useState('')
+    
+    const authenticate = () => {
+        fetch('https://rocket-rest-api.herokuapp.com/api/Employees/valid/' +email)
+        .then((result) => result.json())
+        .then((resultJson) => {
+            if (resultJson == true) {
+                props.navigation.navigate('Home');
+                console.log(authenticate);
+            } else {
+                Alert.alert('Enter employee email');
+                
+            }
+        })
+    }
+
+   // nicolas.genest@codeboxx.biz
+
     return (
-       <ImageBackground 
+        
+        <ImageBackground 
             style={styles.background}
             //background
             source={require("../assets/images/screen-page-1.jpeg")} 
         >
-   
+            <View style={styles.Seperator}>   
+                <View style={styles.LogInContainer} >
+            
+                    <TextInput
+                        placeholder='Enter your email'
+                        onChangeText={(text) => onChangeText(text)} 
+                        value={email}
+                    />    
+    
+                </View>
+                <TouchableOpacity>
+                    <Button style={styles.LogInButton}  onPress={authenticate} title="Sign-In" />
+                </TouchableOpacity>
+            </View>
 
             <View style={styles.logoContainer}>
                 <Image style={styles.logo} source={require("../assets/images/R2.png")} /> 
             </View>
 
         </ImageBackground>
-
+    
     );
 }
 
-export default WelcomeScreen;
+export default LogIn;
 
 const styles = StyleSheet.create({
     background: {
         flex: 1,
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         alignItems: 'center',
     },
     logo: {
-        width: 300,
-        height: 100
+        width: 290,
+    height: 100
 
     },
     logoContainer: {
         position: 'absolute',
-        top: '40%',
+        top: '22%',
         alignItems: 'center'
-    }
+    },
+    Seperator: {
+        display: 'flex',
+        flexDirection:'row-reverse',
+        justifyContent:'space-between'
+    },
+    LogInContainer: {
+        flex: 1.0,
+        width: 250,
+        bottom: '0%',
+        backgroundColor: 'rgba(52, 52, 52, 0.49)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        
+
+    },
+    LogInButton: {
+        
+        
+
+    },
+
 })
