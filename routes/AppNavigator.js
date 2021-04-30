@@ -11,8 +11,8 @@ const AppNavigator = createStackNavigator();
 export const Navigator = () => (
     <NavigationContainer>
         <AppNavigator.Navigator>
-            <AppNavigator.Screen name="Home" component={Home} />
             <AppNavigator.Screen name="Log-In" component={LogIn} />
+            <AppNavigator.Screen name="Home" component={Home} />
             <AppNavigator.Screen name="ElevatorStatuses" component={ElevatorStatuses} />
         </AppNavigator.Navigator>
   </NavigationContainer>

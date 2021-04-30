@@ -20,7 +20,6 @@ function LogIn(props) {
         })
     }
 
-   // nicolas.genest@codeboxx.biz
 
     return (
         
@@ -68,7 +67,7 @@ const styles = StyleSheet.create({
     },
     logoContainer: {
         position: 'absolute',
-        top: '22%',
+        top: '12%',
         alignItems: 'center'
     },
     Seperator: {
@@ -86,10 +85,4 @@ const styles = StyleSheet.create({
         
 
     },
-    LogInButton: {
-        
-        
-
-    },
-
 })
