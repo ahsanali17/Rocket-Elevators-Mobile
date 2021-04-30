@@ -1,26 +1,47 @@
 import React from 'react';
-import { Image, ImageBackground, StyleSheet, View, Text, TextInput, Button } from 'react-native';
+import { Image, ImageBackground, StyleSheet, View, TextInput, Button, Alert, Text, useState, TouchableOpacity, SafeAreaView } from 'react-native';
 import colors from '../config/colors.js';
 
 function LogIn(props) {
    
+    const [ email, onChangeText ] = React.useState('')
+    
+    const authenticate = () => {
+        fetch('https://rocket-rest-api.herokuapp.com/api/Employees/valid/' +email)
+        .then((result) => result.json())
+        .then((resultJson) => {
+            if (resultJson == true) {
+                props.navigation.navigate('Home');
+                console.log(authenticate);
+            } else {
+                Alert.alert('Enter employee email');
+                
+            }
+        })
+    }
+
+   // nicolas.genest@codeboxx.biz
+
     return (
-       <ImageBackground 
+        
+        <ImageBackground 
             style={styles.background}
             //background
             source={require("../assets/images/screen-page-1.jpeg")} 
         >
             <View style={styles.Seperator}>   
                 <View style={styles.LogInContainer} >
-               
+            
                     <TextInput
                         placeholder='Enter your email'
+                        onChangeText={(text) => onChangeText(text)} 
+                        value={email}
                     />    
     
                 </View>
-               
-
-                <Button style={styles.LogInButton} title="Sign-In" />
+                <TouchableOpacity>
+                    <Button style={styles.LogInButton}  onPress={authenticate} title="Sign-In" />
+                </TouchableOpacity>
             </View>
 
             <View style={styles.logoContainer}>
@@ -28,7 +49,7 @@ function LogIn(props) {
             </View>
 
         </ImageBackground>
-        
+    
     );
 }
 
@@ -37,37 +58,38 @@ export default LogIn;
 const styles = StyleSheet.create({
     background: {
         flex: 1,
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         alignItems: 'center',
     },
     logo: {
-        width: 300,
-        height: 100
+        width: 290,
+    height: 100
 
     },
     logoContainer: {
         position: 'absolute',
-        top: '80%',
+        top: '22%',
         alignItems: 'center'
     },
     Seperator: {
         display: 'flex',
-        flexDirection:'column-reverse',
+        flexDirection:'row-reverse',
         justifyContent:'space-between'
     },
     LogInContainer: {
-        flex: 0.4,
+        flex: 1.0,
         width: 250,
-        top: '99%',
+        bottom: '0%',
         backgroundColor: 'rgba(52, 52, 52, 0.49)',
         justifyContent: 'center',
         alignItems: 'center',
+        
 
     },
     LogInButton: {
-        justifyContent: 'flex-start',
-        alignItems:'center',
-        top: '80%'
-    }
+        
+        
+
+    },
 
 })
